@@ -84,6 +84,11 @@ module.exports = parseRequireDefinitions = (config, file, callback) ->
         (ancestorNode) -> ancestorNode.type == "CallExpression" and (ancestorNode.callee.name == "define" or ancestorNode.callee.name == "require" or ancestorNode.callee.name == "requirejs")
       )
       if config.findNestedDependencies or not defineAncestors
+
+        # If the module name is a string that is variable, we should skip it, since its dynamic
+        if (node["arguments"][0].elements and node["arguments"][0].elements.length > 0 and node["arguments"][0].elements[0].type == "BinaryExpression") 
+            return
+
         definitions.push(
           method : "require"
           moduleName : undefined

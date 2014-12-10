@@ -478,6 +478,20 @@ describe "nested dependencies", ->
       done
     )
 
+  it "should not try load dynamic dependencies", (done) ->
+
+    checkExpectedFiles(
+      ["foo.js", "nested_dynamic.js"]
+
+      vinylfs.src("#{dir}/fixtures/core/*.js")
+        .pipe(amdOptimize(
+          "nested_dynamic"
+          findNestedDependencies : true
+        ))
+
+      done
+    )
+
 
 describe "config file", ->
 
